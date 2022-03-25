@@ -19,6 +19,9 @@ $ScriptPath = [system.io.path]::GetDirectoryName($PSCommandPath)
 . (Join-Path $ScriptPath "AvdFunctions.ps1")
 
 Write-Log -Message "Check if RD Infra registry exists"
+$DriveLetter = "C"
+$MaxSize = (Get-PartitionSupportedSize -DriveLetter $DriveLetter).SizeMax
+Resize-Partition -DriveLetter $DriveLetter -Size $MaxSize
 $RegistryCheckObj = IsRDAgentRegistryValidForRegistration
 if (!$RegistryCheckObj.result) {
     Write-Log -Err "RD agent registry check failed ($($RegistryCheckObj.msg))"
